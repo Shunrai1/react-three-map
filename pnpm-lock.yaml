@@ -17,6 +17,9 @@ importers:
       axios:
         specifier: ^1.11.0
         version: 1.12.2
+      normalize.css:
+        specifier: ^8.0.1
+        version: 8.0.1
       react:
         specifier: ^19.1.1
         version: 19.2.0
@@ -1297,6 +1300,9 @@ packages:
 
   node-releases@2.0.25:
     resolution: {integrity: sha512-4auku8B/vw5psvTiiN9j1dAOsXvMoGqJuKJcR+dTdqiXEK20mMTk1UEo3HS16LeGQsVG6+qKTPM9u/qQ2LqATA==}
+
+  normalize.css@8.0.1:
+    resolution: {integrity: sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==}
 
   onetime@7.0.0:
     resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
@@ -2611,6 +2617,8 @@ snapshots:
     optional: true
 
   node-releases@2.0.25: {}
+
+  normalize.css@8.0.1: {}
 
   onetime@7.0.0:
     dependencies:

@@ -1,6 +1,5 @@
 import { useRoutes } from "react-router-dom";
 import routes from "./routes/index.jsx";
-import "./App.css";
 
 function App() {
   //根据路由表生成对应的路由规则
