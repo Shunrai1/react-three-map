@@ -8,15 +8,8 @@ function App() {
 
   return (
     <>
-      <div className="col-xs-7">
-        <div className="panel">
-          <div className="panel-body">
-            {/* 注册路由 */}
-            {element}
-            {/* <div className="text-red-500 text-2xl">hello</div> */}
-          </div>
-        </div>
-      </div>
+      {/* 注册路由 */}
+      {element}
     </>
   );
 }

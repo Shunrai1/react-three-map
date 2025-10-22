@@ -11,4 +11,10 @@ export default defineConfig({
             "~@": path.resolve(__dirname, "./src"),
         },
     },
+    server: {
+        port: 3100,        // 默认端口
+        strictPort: false, // 如果端口被占用，自动尝试下一个可用端口
+        open: true,        // 自动打开浏览器
+        host: true,        // 允许外部访问
+    },
 });

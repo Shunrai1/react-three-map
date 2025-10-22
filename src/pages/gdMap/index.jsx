@@ -1,14 +1,38 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.scss";
 import "~@/assets/style/home.scss";
 import autofit from "autofit.js";
 import MHeader from "@/components/mHeader";
+import MMenu from "@/components/mMenu";
+import MMenuItem from "@/components/mMenuItem";
 // import { Assets } from "./assets.js";
 
 const GdMap = (props) => {
   const assets = useRef();
 
+  // 定义响应式状态
+  const [progress, setProgress] = useState(0);
+  const [activeIndex, setActiveIndex] = useState("1");
+  const [totalView, setTotalView] = useState([
+    {
+      icon: "xiaoshoujine",
+      zh: "2024年生产总值",
+      en: "Gross Domestic Product in 2024",
+      value: 31500,
+      unit: "亿元",
+    },
+    {
+      icon: "zongxiaoliang",
+      zh: "2024年常驻人数",
+      en: "resident population in 2024",
+      value: 15000,
+      unit: "万人",
+    },
+  ]);
 
+  function handleMenuSelect(index) {
+    setActiveIndex(index);
+  }
 
   //   // 初始化加载资源
   // function initAssets(onLoadCallback) {
@@ -55,6 +79,18 @@ const GdMap = (props) => {
         leftSlot={<div className="m-header-weather"><span>小雨</span><span>27℃</span></div>}
         rightSlot={<div className="m-header-date"><span>2023-10-12</span><span>17:53:16</span></div>}
       />
+      {/* 顶部菜单  */}
+      <div className="top-menu">
+        <MMenu defaultIndex={activeIndex} onSelect={handleMenuSelect}>
+          <MMenuItem index="1">经济概览</MMenuItem>
+          <MMenuItem index="2">导航栏</MMenuItem>
+          <MMenuItem index="3">导航栏</MMenuItem>
+          <div className="top-menu-mid-space"></div>
+          <MMenuItem index="4">导航栏</MMenuItem>
+          <MMenuItem index="5">导航栏</MMenuItem>
+          <MMenuItem index="6">导航栏</MMenuItem>
+        </MMenu>
+      </div>
     </div>
   </div>;
 };

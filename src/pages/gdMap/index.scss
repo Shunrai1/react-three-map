@@ -1,3 +1,84 @@
-.large-screen {
-    color: red;
+.m-header-weather,
+.m-header-date {
+  span {
+    padding-right: 10px;
+    color: #c4f3fe;
+    font-size: 14px;
+  }
 }
+.top-menu {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 40px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  .top-menu-mid-space {
+    width: 800px;
+  }
+}
+.bottom-radar {
+  position: absolute;
+  right: 500px;
+  bottom: 100px;
+  z-index: 3;
+}
+.main-btn-group {
+  display: flex;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10px;
+  z-index: 999;
+  &.disabled {
+    pointer-events: none;
+  }
+  .btn {
+    margin-right: 10px;
+  }
+}
+.bottom-svg-line-left,
+.bottom-svg-line-right {
+  position: absolute;
+  right: 50%;
+  width: 721px;
+  height: 57px;
+  margin-right: -5px;
+  bottom: -21px;
+}
+.bottom-svg-line-right {
+  transform: scaleX(-1);
+  left: 50%;
+  right: inherit;
+  margin-right: inherit;
+  margin-left: -5px;
+}
+/* 初始化动画开始位置 */
+// .m-header {
+//   transform: translateY(-100%);
+//   opacity: 0;
+// }
+// .top-menu {
+//   transform: translateY(-250%);
+//   opacity: 0;
+// }
+// .count-card {
+//   transform: translateY(150%);
+//   opacity: 0;
+// }
+// .left-card {
+//   transform: translateX(-150%);
+//   opacity: 0;
+// }
+// .right-card {
+//   transform: translateX(150%);
+//   opacity: 0;
+// }
+// .bottom-tray {
+//   transform: translateY(100%);
+//   opacity: 0;
+// }
+// .bottom-radar {
+//   transform: translateY(100%);
+//   opacity: 0;
+// }
