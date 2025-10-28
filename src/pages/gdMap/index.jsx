@@ -5,6 +5,9 @@ import autofit from "autofit.js";
 import MHeader from "@/components/mHeader";
 import MMenu from "@/components/mMenu";
 import MMenuItem from "@/components/mMenuItem";
+import MCountCard from "@/components/mCountCard";
+import BulkCommoditySalesChart from "./components/BulkCommoditySalesChart";
+import YearlyEconomyTrend from "./components/YearlyEconomyTrend";
 // import { Assets } from "./assets.js";
 
 const GdMap = (props) => {
@@ -90,6 +93,25 @@ const GdMap = (props) => {
           <MMenuItem index="5">导航栏</MMenuItem>
           <MMenuItem index="6">导航栏</MMenuItem>
         </MMenu>
+      </div>
+      {/* 顶部统计卡片 */}
+      <div className="top-count-card">
+        {
+          totalView.map((item, index) => {
+            return <MCountCard key={index} info={item} />
+          })
+        }
+      </div>
+      {/* 左边布局 图表  */}
+      <div className="left-wrap">
+        <div className="left-wrap-3d">
+          {/* 大宗商品销售额 */}
+          <BulkCommoditySalesChart />
+          {/* 年度经济增长点 */}
+          <YearlyEconomyTrend />
+          {/* 近年经济情况 */}
+          {/* 各区经济收益 */}
+        </div>
       </div>
     </div>
   </div>;

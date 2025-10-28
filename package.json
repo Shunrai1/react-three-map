@@ -11,14 +11,17 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "autofit.js": "^3.1.0",
     "axios": "^1.11.0",
+    "echarts": "^6.0.0",
+    "gsap": "^3.13.0",
+    "normalize.css": "^8.0.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.0",
     "sass": "^1.90.0",
-    "autofit.js": "^3.1.0",
-    "normalize.css": "^8.0.1",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

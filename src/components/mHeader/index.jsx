@@ -1,3 +1,4 @@
+import React from 'react';
 import './index.scss';
 import SvgLineAnimation from '../mSvglineAnimation';
 const MHeader = (props) => {
