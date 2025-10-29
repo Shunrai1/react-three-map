@@ -8,6 +8,17 @@ import MMenuItem from "@/components/mMenuItem";
 import MCountCard from "@/components/mCountCard";
 import BulkCommoditySalesChart from "./components/BulkCommoditySalesChart";
 import YearlyEconomyTrend from "./components/YearlyEconomyTrend";
+import EconomicTrendChart from "./components/EconomicTrendChart";
+import DistrictEconomicIncome from "./components/DistrictEconomicIncome";
+import PurposeSpecialFunds from "./components/PurposeSpecialFunds";
+import ProportionPopulationConsumption from "./components/ProportionPopulationConsumption";
+import ElectricityUsage from "./components/ElectricityUsage";
+import QuarterlyGrowthSituation from "./components/QuarterlyGrowthSituation";
+import './components/index.scss';
+import SvgLineAnimation from '@/components/mSvglineAnimation';
+import arrowBig from '@/assets/images/bottom-menu-arrow-big.svg';
+import arrowSmall from '@/assets/images/bottom-menu-arrow-small.svg';
+import MRadar from '@/components/mRadar';
 // import { Assets } from "./assets.js";
 
 const GdMap = (props) => {
@@ -108,11 +119,75 @@ const GdMap = (props) => {
           {/* 大宗商品销售额 */}
           <BulkCommoditySalesChart />
           {/* 年度经济增长点 */}
-          <YearlyEconomyTrend />
+          {/* <YearlyEconomyTrend /> */}
           {/* 近年经济情况 */}
+          <EconomicTrendChart />
           {/* 各区经济收益 */}
+          <DistrictEconomicIncome />
         </div>
       </div>
+      {/* 右边布局 图表 */}
+      <div className="right-wrap">
+        <div className="right-wrap-3d">
+          {/* 专项资金用途  */}
+          <PurposeSpecialFunds />
+          {/* 人群消费占比  */}
+          <ProportionPopulationConsumption />
+          {/* 用电情况  */}
+          <ElectricityUsage />
+          {/* 各季度增长情况  */}
+          <QuarterlyGrowthSituation />
+        </div>
+      </div>
+
+      {/* 底部托盘 */}
+      <div className="bottom-tray">
+        {/* svg线条动画 */}
+        <SvgLineAnimation className="bottom-svg-line-left"
+          width={721}
+          height={57}
+          color="#30DCFF"
+          strokeWidth={2}
+          dir={[0, 1]}
+          length={50}
+          path="M1 56.6105C1 31.5123 185.586 10.0503 451.904 1.35519C458.942 1.12543 465.781 4.00883 470.505 9.22964L484.991 25.2383C487.971 28.4775 492.938 30.4201 498.254 30.4201H720.142">
+        </SvgLineAnimation>
+        <SvgLineAnimation className="bottom-svg-line-right"
+          width={721}
+          height={57}
+          color="#30DCFF"
+          strokeWidth={2}
+          dir={[0, 1]}
+          length={50}
+          path="M1 56.6105C1 31.5123 185.586 10.0503 451.904 1.35519C458.942 1.12543 465.781 4.00883 470.505 9.22964L484.991 25.2383C487.971 28.4775 492.938 30.4201 498.254 30.4201H720.142">
+        </SvgLineAnimation>
+        {/* 做箭头 */}
+        <div className="bottom-tray-arrow">
+          <img src={arrowBig} alt="" />
+          <img src={arrowSmall} alt="" />
+        </div>
+        {/* 底部菜单 */}
+        <div className="bottom-menu">
+          <div className="bottom-menu-item is-active"><span>人口概览</span></div>
+          <div className="bottom-menu-item"><span>小标题</span></div>
+          <div className="bottom-menu-item"><span>小标题</span></div>
+          <div className="bottom-menu-item"><span>小标题</span></div>
+        </div>
+        {/* 右箭头 */}
+        <div className="bottom-tray-arrow is-reverse">
+          <img src={arrowBig} alt="" />
+          <img src={arrowSmall} alt="" />
+        </div>
+      </div>
+
+      {/* 雷达 */}
+      <div className="bottom-radar">
+        <MRadar></MRadar>
+      </div>
+
+      {/* 左右装饰线 */}
+      <div className="large-screen-left-zsline"></div>
+      <div className="large-screen-right-zsline"></div>
     </div>
   </div>;
 };

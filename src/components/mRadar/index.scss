@@ -1,0 +1,19 @@
+.m-radar {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  &-bg {
+    width: 92px;
+    height: 92px;
+  }
+  &-saomiao {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -39px;
+    margin-top: -39px;
+    width: 79px;
+    height: 79px;
+    animation: rotate360Animate 3s linear infinite;
+  }
+}
