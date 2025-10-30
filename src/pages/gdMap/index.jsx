@@ -119,7 +119,7 @@ const GdMap = (props) => {
           {/* 大宗商品销售额 */}
           <BulkCommoditySalesChart />
           {/* 年度经济增长点 */}
-          {/* <YearlyEconomyTrend /> */}
+          <YearlyEconomyTrend />
           {/* 近年经济情况 */}
           <EconomicTrendChart />
           {/* 各区经济收益 */}

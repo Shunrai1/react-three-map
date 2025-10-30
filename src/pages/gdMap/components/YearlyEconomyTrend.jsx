@@ -33,16 +33,15 @@ const YearlyEconomyTrend = () => {
 
     return (
         <div className="left-card">
-            <MCard title="年度经济增长点" height={300}>
-                <div className="pie-chat-wrap" style={{ height: '100%', display: 'flex' }}>
-                    <div className="pie-chat" style={{ flex: 1, minHeight: '200px' }}>
+            <MCard title="年度经济增长点" >
+                <div className="pie-chat-wrap" >
+                    <div className="pie-chat" >
                         <MPieFixed
                             ref={pieRef}
                             data={state.pieData}
                             delay={3000}
                             colors={state.pieDataColor}
                             opacity={0.6}
-                            className="pieCanvas"
                         >
                             {(slotProps) => (
                                 <div className="pieCanvas-content">

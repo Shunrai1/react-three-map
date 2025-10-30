@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../mPie/index.scss';
 import * as THREE from 'three';
+import { emptyObject } from "@/mini3d";
 import gsap from 'gsap';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -25,9 +26,10 @@ export default function MPieFixed({
     const timerRef = useRef(null);
     const prevMeshRef = useRef(null);
 
-    // 使用 ref 存储状态，避免触发重新渲染
-    const activeIndexRef = useRef(0);
-    const countRef = useRef(0);
+    // 使用 state 存储 activeIndex，这样才能触发重新渲染和数据更新
+    const [activeIndex, setActiveIndex] = useState(0);
+    const activeIndexRef = useRef(0); // 用于在定时器中获取最新值
+    const [count, setCount] = useState(0); // 改用 state，让初始化后能触发更新
 
     const getTexture = (url) => {
         const texture = new THREE.TextureLoader().load(url);
@@ -85,10 +87,11 @@ export default function MPieFixed({
         outerShape.arc(0, 0, options.outerRadius, options.startAngle, options.endAngle);
         const outerPoints = outerShape.getPoints(options.segments);
 
+        // 内层：需要把开始结束角度调换下，并反向绘制
         const innerShape = new THREE.Shape();
-        innerShape.arc(0, 0, options.innerRadius, options.startAngle, options.endAngle, true);
+        innerShape.arc(0, 0, options.innerRadius, options.endAngle, options.startAngle, true);
         const innerPoints = innerShape.getPoints(options.segments);
-
+        // 组合内外侧的点，并重新生成shape
         const shape = new THREE.Shape(outerPoints.concat(innerPoints));
 
         const extrudeSettings = {
@@ -124,8 +127,9 @@ export default function MPieFixed({
         const prevMesh = pieGroupRef.current.children[prevIndex];
         prevMeshRef.current = prevMesh;
 
-        // 直接更新 ref，不触发重新渲染
+        // 同时更新 ref 和 state
         activeIndexRef.current = newIndex;
+        setActiveIndex(newIndex);
 
         const chooseMesh = pieGroupRef.current.children[newIndex];
 
@@ -140,12 +144,12 @@ export default function MPieFixed({
         }
     };
 
-    const createPie = () => {
+    const createPie = (total) => {
         let startAngle = 0;
         let endAngle = 0;
 
         for (let i = 0; i < data.length; i++) {
-            const percent = data[i].value / countRef.current;
+            const percent = data[i].value / total;
             if (i === 0) {
                 startAngle = 0;
             } else {
@@ -171,6 +175,7 @@ export default function MPieFixed({
     };
 
     const loopChange = () => {
+        // 从 ref 中读取最新值，避免闭包陷阱
         let index = activeIndexRef.current + 1;
 
         if (index >= data.length) {
@@ -188,19 +193,25 @@ export default function MPieFixed({
     };
 
     const initRenderer = (width, height) => {
+        // 先清理已存在的 canvas，防止重复
+        if (pieDomRef.current) {
+            const existingCanvases = pieDomRef.current.querySelectorAll('canvas');
+            existingCanvases.forEach(canvas => canvas.remove());
+        }
+
         rendererRef.current = new THREE.WebGLRenderer({
             antialias: true,
             alpha: true, // 透明背景
         });
         rendererRef.current.setPixelRatio(window.devicePixelRatio);
         rendererRef.current.setSize(width, height);
-        rendererRef.current.setClearColor(0x000000, 0); // 完全透明
+        // rendererRef.current.setClearColor(0x000000, 0); // 完全透明
 
         const canvas = rendererRef.current.domElement;
-        canvas.style.position = 'absolute';
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvas.style.zIndex = '1';
+        // canvas.style.position = 'absolute';
+        // canvas.style.top = '0';
+        // canvas.style.left = '0';
+        // canvas.style.zIndex = '1';
 
         pieDomRef.current.appendChild(canvas);
     };
@@ -228,21 +239,13 @@ export default function MPieFixed({
     };
 
     const loop = () => {
-        const animate = () => {
-            if (!rendererRef.current || !sceneRef.current || !cameraRef.current) {
-                return;
-            }
-
+        rendererRef.current.setAnimationLoop(() => {
             rendererRef.current.render(sceneRef.current, cameraRef.current);
             controlsRef.current && controlsRef.current.update();
-
-            requestAnimationFrame(animate);
-        };
-
-        animate();
+        });
     };
 
-    const init = (width, height) => {
+    const init = (width, height, total) => {
         sceneRef.current = new THREE.Scene();
         initCamera(width, height);
         initRenderer(width, height);
@@ -273,52 +276,72 @@ export default function MPieFixed({
             color: "#00ffff",
         });
 
-        createPie();
+        createPie(total);
         loop();
     };
 
     const destroy = () => {
-        if (timerRef.current) {
-            clearInterval(timerRef.current);
+        if (prevMeshRef.current) {
+            gsap.set(prevMeshRef.current.scale, { z: 1 });
+            gsap.set(prevMeshRef.current.material, { opacity: opacity });
         }
+        stop()
+        // window.removeEventListener("resize", () => {
+        //     resize();
+        // });
         if (rendererRef.current) {
+            emptyObject(pieGroupRef.current);
             rendererRef.current.dispose();
-            if (pieDomRef.current && rendererRef.current.domElement && pieDomRef.current.contains(rendererRef.current.domElement)) {
-                pieDomRef.current.removeChild(rendererRef.current.domElement);
+            rendererRef.current.forceContextLoss();
+            controlsRef.current.dispose();
+            if (pieDomRef.current) {
+                pieDomRef.current.innerHTML = "";
             }
-        }
-        if (sceneRef.current) {
-            sceneRef.current.clear();
+            sceneRef.current = null;
+            cameraRef.current = null;
+            rendererRef.current = null;
+            controlsRef.current = null;
         }
     };
 
+    const stop = () => {
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+        }
+        if (controlsRef.current) {
+            controlsRef.current.enabled = false;
+        }
+        if (rendererRef.current) {
+            rendererRef.current.setAnimationLoop(null);
+        }
+    }
     useEffect(() => {
         if (pieDomRef.current && data.length > 0) {
-            const width = pieDomRef.current.offsetWidth || 300;
-            const height = pieDomRef.current.offsetHeight || 200;
+            const width = pieDomRef.current.offsetWidth;
+            const height = pieDomRef.current.offsetHeight;
             const total = data.map(item => item.value).reduce((a, b) => a + b, 0);
 
-            countRef.current = total;
-            init(width, height);
-        }
-
+            setCount(total); // 使用 setState，触发重新渲染
+            init(width, height, total);
+        };
         return () => {
+            clearInterval(timerRef.current);
             destroy();
         };
     }, []);
 
-    // 计算当前显示的数据
+    // 计算当前显示的数据 - 类似 Vue 的 computed
     const currentData = React.useMemo(() => {
         if (!data || data.length === 0) return { count: 0 };
-        const index = activeIndexRef.current >= data.length ? 0 : activeIndexRef.current;
+        const index = activeIndex >= data.length ? 0 : activeIndex;
         return {
             ...data[index],
-            count: countRef.current,
+            count: count,
         };
-    }, [data]);
+    }, [activeIndex, data, count]);
 
     return (
-        <div className="three-pie-wrap">
+        <div className="three-pie-wrap pieCanvas">
             <div className="three-pie" ref={pieDomRef} />
             <div className="three-pie-slot">
                 {typeof children === 'function' ? children({ data: currentData }) : children}
