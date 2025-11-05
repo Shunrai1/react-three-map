@@ -53,6 +53,9 @@ importers:
       three.interactive:
         specifier: ^1.7.0
         version: 1.8.0(three@0.161.0)
+      tiny-emitter:
+        specifier: ^2.1.0
+        version: 2.1.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.33.0
@@ -1531,6 +1534,9 @@ packages:
   three@0.161.0:
     resolution: {integrity: sha512-LC28VFtjbOyEu5b93K0bNRLw1rQlMJ85lilKsYj6dgTu+7i17W+JCCEbvrpmNHF1F3NAUqDSWq50UD7w9H2xQw==}
 
+  tiny-emitter@2.1.0:
+    resolution: {integrity: sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==}
+
   tinyglobby@0.2.15:
     resolution: {integrity: sha512-j2Zq4NyQYG5XMST4cbs02Ak8iJUdxRM0XI5QyxXuZOzKOINmWurp3smXu3y5wDcJrptwpSjgXHzIQxR0omXljQ==}
     engines: {node: '>=12.0.0'}
@@ -2866,6 +2872,8 @@ snapshots:
       three: 0.161.0
 
   three@0.161.0: {}
+
+  tiny-emitter@2.1.0: {}
 
   tinyglobby@0.2.15:
     dependencies:

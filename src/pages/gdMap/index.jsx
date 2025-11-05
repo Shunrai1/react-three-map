@@ -19,8 +19,9 @@ import SvgLineAnimation from '@/components/mSvglineAnimation';
 import arrowBig from '@/assets/images/bottom-menu-arrow-big.svg';
 import arrowSmall from '@/assets/images/bottom-menu-arrow-small.svg';
 import MRadar from '@/components/mRadar';
-// import { Assets } from "./assets.js";
-
+import { Assets } from "./assets.js";
+import gsap from "gsap";
+import emitter from "@/utils/emitter";
 const GdMap = (props) => {
   const assets = useRef();
 
@@ -48,27 +49,58 @@ const GdMap = (props) => {
     setActiveIndex(index);
   }
 
-  //   // 初始化加载资源
-  // function initAssets(onLoadCallback) {
-  //   assets.value = new Assets();
-  //   // 资源加载进度
-  //   let params = {
-  //     progress: 0,
-  //   };
-  //   assets.value.instance.on("onProgress", (path, itemsLoaded, itemsTotal) => {
-  //     let p = Math.floor((itemsLoaded / itemsTotal) * 100);
-  //     gsap.to(params, {
-  //       progress: p,
-  //       onUpdate: () => {
-  //         state.progress = Math.floor(params.progress);
-  //       },
-  //     });
-  //   });
-  //   // 资源加载完成
-  //   assets.value.instance.on("onLoad", () => {
-  //     onLoadCallback && onLoadCallback();
-  //   });
-  // }
+  // 初始化加载资源
+  function initAssets(onLoadCallback) {
+    assets.current = new Assets();
+    // 资源加载进度
+    let params = {
+      progress: 0,
+    };
+    assets.current.instance.on("onProgress", (path, itemsLoaded, itemsTotal) => {
+      let p = Math.floor((itemsLoaded / itemsTotal) * 100);
+      gsap.to(params, {
+        progress: p,
+        onUpdate: () => {
+          setProgress(Math.floor(params.progress));
+        },
+      });
+    });
+    // 资源加载完成
+    assets.current.instance.on("onLoad", () => {
+      onLoadCallback && onLoadCallback();
+    });
+  }
+
+  // 隐藏loading
+  async function hideLoading() {
+    return new Promise((resolve, reject) => {
+      let tl = gsap.timeline();
+      tl.to(".loading-text span", {
+        y: "200%",
+        opacity: 0,
+        ease: "power4.inOut",
+        duration: 2,
+        stagger: 0.2,
+      });
+      tl.to(
+        ".loading-progress",
+        { opacity: 0, ease: "power4.inOut", duration: 2 },
+        "<"
+      );
+      tl.to(
+        ".loading",
+        {
+          opacity: 0,
+          ease: "power4.inOut",
+          onComplete: () => {
+            resolve();
+          },
+        },
+        "-=1"
+      );
+    });
+  }
+
   // 相当于 Vue 的 onMounted
   useEffect(() => {
     // 在这里写组件挂载后执行的代码
@@ -79,6 +111,16 @@ const GdMap = (props) => {
       resize: true,
     });
 
+    // 初始化资源
+    initAssets(async () => {
+      // 加载地图
+      emitter.$emit("loadMap", assets.current);
+      // 隐藏loading
+      await hideLoading();
+      // 播放场景
+      // mapSceneRef.value.play();
+    });
+
     // 如果需要在组件卸载时执行清理操作（相当于 Vue 的 onUnmounted）
     return () => {
       autofit.off()
@@ -86,6 +128,8 @@ const GdMap = (props) => {
   }, []); // 空数组表示只在组件挂载时执行一次
 
   return <div className="large-screen">
+    {/* 地图 */}
+    {/* <mapScene ref="mapSceneRef"></mapScene> */}
     <div className="large-screen-wrap" id="large-screen">
       <MHeader
         title="广东省数据可视化平台"
@@ -188,6 +232,23 @@ const GdMap = (props) => {
       {/* 左右装饰线 */}
       <div className="large-screen-left-zsline"></div>
       <div className="large-screen-right-zsline"></div>
+    </div>
+
+    {/* loading动画  */}
+    <div className="loading">
+      <div className="loading-text">
+        <span style={{ '--index': 1 }}>L</span>
+        <span style={{ '--index': 2 }}>O</span>
+        <span style={{ '--index': 3 }}>A</span>
+        <span style={{ '--index': 4 }}>D</span>
+        <span style={{ '--index': 5 }}>I</span>
+        <span style={{ '--index': 6 }}>N</span>
+        <span style={{ '--index': 7 }}>G</span>
+      </div>
+      <div className="loading-progress">
+        <span className="value">{progress}</span>
+        <span className="unit">%</span>
+      </div>
     </div>
   </div>;
 };
