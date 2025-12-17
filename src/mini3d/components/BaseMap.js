@@ -62,6 +62,7 @@ export class BaseMap {
               return false
             }
             const [x, y] = this.geoProjection(polygon[i])
+            // 这里使用 -y 是为了修正地图的上下方向，因为 d3-geo 和 Three.js 的坐标系 Y 轴方向是相反的
             if (i === 0) {
               shape.moveTo(x, -y)
             }
