@@ -22,8 +22,10 @@ import MRadar from '@/components/mRadar';
 import { Assets } from "./assets.js";
 import gsap from "gsap";
 import emitter from "@/utils/emitter";
+import MapScene from "./map.jsx";
 const GdMap = (props) => {
   const assets = useRef();
+  const mapSceneRef = useRef(null)
 
   // 定义响应式状态
   const [progress, setProgress] = useState(0);
@@ -51,12 +53,13 @@ const GdMap = (props) => {
 
   // 初始化加载资源
   function initAssets(onLoadCallback) {
-    assets.current = new Assets();
+    const currentAssets = new Assets();
+    assets.current = currentAssets;
     // 资源加载进度
     let params = {
       progress: 0,
     };
-    assets.current.instance.on("onProgress", (path, itemsLoaded, itemsTotal) => {
+    currentAssets.instance.on("onProgress", (path, itemsLoaded, itemsTotal) => {
       let p = Math.floor((itemsLoaded / itemsTotal) * 100);
       gsap.to(params, {
         progress: p,
@@ -66,7 +69,9 @@ const GdMap = (props) => {
       });
     });
     // 资源加载完成
-    assets.current.instance.on("onLoad", () => {
+    currentAssets.instance.on("onLoad", () => {
+      // 防止 StrictMode 下旧实例的回调触发时，assets.current 已指向新实例，导致引用错误
+      if (assets.current !== currentAssets) return;
       onLoadCallback && onLoadCallback();
     });
   }
@@ -101,8 +106,49 @@ const GdMap = (props) => {
     });
   }
 
+
+  // 地图开始动画播放完成
+function handleMapPlayComplete() {
+  let tl = gsap.timeline({ paused: false })
+  let leftCards = gsap.utils.toArray(".left-card")
+  let rightCards = gsap.utils.toArray(".right-card")
+  let countCards = gsap.utils.toArray(".count-card")
+  tl.addLabel("start", 0.5)
+  tl.addLabel("menu", 0.5)
+  tl.addLabel("card", 1)
+  tl.addLabel("countCard", 3)
+  tl.to(".m-header", { y: 0, opacity: 1, duration: 1.5, ease: "power4.out" }, "start")
+  tl.to(".bottom-tray", { y: 0, opacity: 1, duration: 1.5, ease: "power4.out" }, "start")
+  tl.to(
+    ".top-menu",
+    {
+      y: 0,
+      opacity: 1,
+      duration: 1.5,
+      ease: "power4.out",
+    },
+    "-=1"
+  )
+  tl.to(".bottom-radar", { y: 0, opacity: 1, duration: 1.5, ease: "power4.out" }, "-=2")
+  tl.to(leftCards, { x: 0, opacity: 1, stagger: 0.2, duration: 1.5, ease: "power4.out" }, "card")
+  tl.to(rightCards, { x: 0, opacity: 1, stagger: 0.2, duration: 1.5, ease: "power4.out" }, "card")
+  tl.to(
+    countCards,
+    {
+      y: 0,
+      opacity: 1,
+      stagger: 0.2,
+      duration: 1.5,
+      ease: "power4.out",
+    },
+    "card"
+  )
+}
+
   // 相当于 Vue 的 onMounted
   useEffect(() => {
+    // 监听地图播放完成，执行事件
+    emitter.$on("mapPlayComplete", handleMapPlayComplete)
     // 在这里写组件挂载后执行的代码
     assets.current = autofit.init({
       dh: 1080,
@@ -113,23 +159,26 @@ const GdMap = (props) => {
 
     // 初始化资源
     initAssets(async () => {
+      console.log(assets.current,'hh');
+      
       // 加载地图
       emitter.$emit("loadMap", assets.current);
       // 隐藏loading
       await hideLoading();
       // 播放场景
-      // mapSceneRef.value.play();
+      mapSceneRef.current.play()
     });
 
     // 如果需要在组件卸载时执行清理操作（相当于 Vue 的 onUnmounted）
     return () => {
       autofit.off()
+      emitter.$off("mapPlayComplete", handleMapPlayComplete)
     };
   }, []); // 空数组表示只在组件挂载时执行一次
 
   return <div className="large-screen">
     {/* 地图 */}
-    {/* <mapScene ref="mapSceneRef"></mapScene> */}
+    <MapScene ref={mapSceneRef}></MapScene>
     <div className="large-screen-wrap" id="large-screen">
       <MHeader
         title="广东省数据可视化平台"

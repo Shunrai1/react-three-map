@@ -1,4 +1,4 @@
-import { PerspectiveCamera, OrthographicCamera, Vector3 } from "three";
+import { PerspectiveCamera, OrthographicCamera, Vector3, MOUSE } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 export class Camera {
   constructor({ sizes, scene, canvas }, options = { isOrthographic: false }) {
@@ -40,6 +40,11 @@ export class Camera {
   }
   setControls() {
     this.controls = new OrbitControls(this.instance, this.canvas);
+    // this.controls.mouseButtons = {
+    //   LEFT: MOUSE.PAN, // 左键 平移
+    //   MIDDLE: MOUSE.ROTATE, // 中键 旋转
+    //   RIGHT: MOUSE.DOLLY, // 右键 缩放
+    // };
     this.controls.enableDamping = true;
     this.controls.update();
   }
