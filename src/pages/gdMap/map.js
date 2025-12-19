@@ -172,6 +172,7 @@ export class World extends Mini3d {
         this.flyLineFocusGroup.visible = false;
       },
     });
+    // 在时间轴到达 "focusMap" 这个时间点时，用 1 秒钟的时间，将 focusMapGroup（聚焦地图组）平滑移动到坐标原点 (0, 0, 0)
     tl.to(
       this.focusMapGroup.position,
       {
