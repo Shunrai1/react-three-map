@@ -128,22 +128,22 @@ export class World extends Mini3d {
     this.createRotateBorder();
     // 创建标签
     this.createLabel();
-    // // 创建地图
-    // this.createMap()
-    // // 添加事件
-    // this.createEvent()
-    // // 创建飞线
-    // this.createFlyLine()
-    // // 创建飞线焦点
-    // this.createFocus()
-    // // 创建粒子
-    // this.createParticles()
-    // // 创建散点图
-    // this.createScatter()
-    // // 创建信息点
-    // this.createInfoPoint()
-    // // 创建轮廓
-    // this.createStorke()
+    // 创建地图
+    this.createMap();
+    // 添加事件
+    this.createEvent();
+    // 创建飞线
+    this.createFlyLine();
+    // 创建飞线焦点
+    this.createFocus();
+    // 创建粒子
+    this.createParticles();
+    // 创建散点图
+    this.createScatter();
+    // 创建信息点
+    this.createInfoPoint();
+    // 创建轮廓
+    this.createStorke();
     // // this.time.on("tick", () => {
     // //   console.log(this.camera.instance.position);
     // // });
@@ -162,205 +162,205 @@ export class World extends Mini3d {
     tl.addLabel("focusMap", 1.5);
     tl.addLabel("focusMapOpacity", 2);
     tl.addLabel("bar", 3);
-    // tl.to(this.camera.instance.position, {
-    //   duration: 2,
-    //   x: -0.17427287762525134,
-    //   y: 13.678992786206543,
-    //   z: 20.688611202093714,
-    //   ease: "circ.out",
-    //   onStart: () => {
-    //     this.flyLineFocusGroup.visible = false
-    //   },
-    // })
-    // tl.to(
-    //   this.focusMapGroup.position,
-    //   {
-    //     duration: 1,
-    //     x: 0,
-    //     y: 0,
-    //     z: 0,
-    //   },
-    //   "focusMap"
-    // )
+    tl.to(this.camera.instance.position, {
+      duration: 2,
+      x: -0.17427287762525134,
+      y: 13.678992786206543,
+      z: 20.688611202093714,
+      ease: "circ.out",
+      onStart: () => {
+        this.flyLineFocusGroup.visible = false;
+      },
+    });
+    tl.to(
+      this.focusMapGroup.position,
+      {
+        duration: 1,
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      "focusMap"
+    );
 
-    // tl.to(
-    //   this.focusMapGroup.scale,
-    //   {
-    //     duration: 1,
-    //     x: 1,
-    //     y: 1,
-    //     z: 1,
-    //     ease: "circ.out",
-    //     onComplete: () => {
-    //       this.flyLineGroup.visible = true
-    //       this.scatterGroup.visible = true
-    //       this.InfoPointGroup.visible = true
-    //       this.createInfoPointLabelLoop()
-    //     },
-    //   },
-    //   "focusMap"
-    // )
+    tl.to(
+      this.focusMapGroup.scale,
+      {
+        duration: 1,
+        x: 1,
+        y: 1,
+        z: 1,
+        ease: "circ.out",
+        onComplete: () => {
+          this.flyLineGroup.visible = true;
+          this.scatterGroup.visible = true;
+          this.InfoPointGroup.visible = true;
+          this.createInfoPointLabelLoop();
+        },
+      },
+      "focusMap"
+    );
 
-    // tl.to(
-    //   this.focusMapTopMaterial,
-    //   {
-    //     duration: 1,
-    //     opacity: 1,
-    //     ease: "circ.out",
-    //   },
-    //   "focusMapOpacity"
-    // )
-    // tl.to(
-    //   this.focusMapSideMaterial,
-    //   {
-    //     duration: 1,
-    //     opacity: 1,
-    //     ease: "circ.out",
-    //     onComplete: () => {
-    //       this.focusMapSideMaterial.transparent = false
-    //     },
-    //   },
-    //   "focusMapOpacity"
-    // )
-    // this.otherLabel.map((item, index) => {
-    //   let element = item.element.querySelector(".other-label")
-    //   tl.to(
-    //     element,
-    //     {
-    //       duration: 1,
-    //       delay: 0.1 * index,
-    //       translateY: 0,
-    //       opacity: 1,
-    //       ease: "circ.out",
-    //     },
-    //     "focusMapOpacity"
-    //   )
-    // })
-    // tl.to(
-    //   this.mapLineMaterial,
-    //   {
-    //     duration: 0.5,
-    //     delay: 0.3,
-    //     opacity: 1,
-    //   },
-    //   "focusMapOpacity"
-    // )
-    // tl.to(
-    //   this.rotateBorder1.scale,
-    //   {
-    //     delay: 0.3,
-    //     duration: 1,
-    //     x: 1,
-    //     y: 1,
-    //     z: 1,
-    //     ease: "circ.out",
-    //   },
-    //   "focusMapOpacity"
-    // )
-    // tl.to(
-    //   this.rotateBorder2.scale,
-    //   {
-    //     duration: 1,
-    //     delay: 0.5,
-    //     x: 1,
-    //     y: 1,
-    //     z: 1,
-    //     ease: "circ.out",
-    //     onComplete: () => {
-    //       this.flyLineFocusGroup.visible = true
-    //       emitter.$emit("mapPlayComplete")
-    //     },
-    //   },
-    //   "focusMapOpacity"
-    // )
-    // this.allBar.map((item, index) => {
-    //   if (item.userData.name === "广州市") {
-    //     return false
-    //   }
-    //   tl.to(
-    //     item.scale,
-    //     {
-    //       duration: 1,
-    //       delay: 0.1 * index,
-    //       x: 1,
-    //       y: 1,
-    //       z: 1,
-    //       ease: "circ.out",
-    //     },
-    //     "bar"
-    //   )
-    // })
-    // this.allBarMaterial.map((item, index) => {
-    //   tl.to(
-    //     item,
-    //     {
-    //       duration: 1,
-    //       delay: 0.1 * index,
-    //       opacity: 1,
-    //       ease: "circ.out",
-    //     },
-    //     "bar"
-    //   )
-    // })
+    tl.to(
+      this.focusMapTopMaterial,
+      {
+        duration: 1,
+        opacity: 1,
+        ease: "circ.out",
+      },
+      "focusMapOpacity"
+    );
+    tl.to(
+      this.focusMapSideMaterial,
+      {
+        duration: 1,
+        opacity: 1,
+        ease: "circ.out",
+        onComplete: () => {
+          this.focusMapSideMaterial.transparent = false;
+        },
+      },
+      "focusMapOpacity"
+    );
+    this.otherLabel.map((item, index) => {
+      let element = item.element.querySelector(".other-label");
+      tl.to(
+        element,
+        {
+          duration: 1,
+          delay: 0.1 * index,
+          translateY: 0,
+          opacity: 1,
+          ease: "circ.out",
+        },
+        "focusMapOpacity"
+      );
+    });
+    tl.to(
+      this.mapLineMaterial,
+      {
+        duration: 0.5,
+        delay: 0.3,
+        opacity: 1,
+      },
+      "focusMapOpacity"
+    );
+    tl.to(
+      this.rotateBorder1.scale,
+      {
+        delay: 0.3,
+        duration: 1,
+        x: 1,
+        y: 1,
+        z: 1,
+        ease: "circ.out",
+      },
+      "focusMapOpacity"
+    );
+    tl.to(
+      this.rotateBorder2.scale,
+      {
+        duration: 1,
+        delay: 0.5,
+        x: 1,
+        y: 1,
+        z: 1,
+        ease: "circ.out",
+        onComplete: () => {
+          this.flyLineFocusGroup.visible = true;
+          emitter.$emit("mapPlayComplete");
+        },
+      },
+      "focusMapOpacity"
+    );
+    this.allBar.map((item, index) => {
+      if (item.userData.name === "广州市") {
+        return false;
+      }
+      tl.to(
+        item.scale,
+        {
+          duration: 1,
+          delay: 0.1 * index,
+          x: 1,
+          y: 1,
+          z: 1,
+          ease: "circ.out",
+        },
+        "bar"
+      );
+    });
+    this.allBarMaterial.map((item, index) => {
+      tl.to(
+        item,
+        {
+          duration: 1,
+          delay: 0.1 * index,
+          opacity: 1,
+          ease: "circ.out",
+        },
+        "bar"
+      );
+    });
 
-    // this.allProvinceLabel.map((item, index) => {
-    //   let element = item.element.querySelector(".provinces-label-wrap")
-    //   let number = item.element.querySelector(".number .value")
-    //   let numberVal = Number(number.innerText)
-    //   let numberAnimate = {
-    //     score: 0,
-    //   }
-    //   tl.to(
-    //     element,
-    //     {
-    //       duration: 1,
-    //       delay: 0.2 * index,
-    //       translateY: 0,
-    //       opacity: 1,
-    //       ease: "circ.out",
-    //     },
-    //     "bar"
-    //   )
-    //   tl.to(
-    //     numberAnimate,
-    //     {
-    //       duration: 1,
-    //       delay: 0.2 * index,
-    //       score: numberVal,
-    //       onUpdate: showScore,
-    //     },
-    //     "bar"
-    //   )
-    //   function showScore() {
-    //     number.innerText = numberAnimate.score.toFixed(0)
-    //   }
-    // })
-    // this.allGuangquan.map((item, index) => {
-    //   tl.to(
-    //     item.children[0].scale,
-    //     {
-    //       duration: 1,
-    //       delay: 0.1 * index,
-    //       x: 1,
-    //       y: 1,
-    //       z: 1,
-    //       ease: "circ.out",
-    //     },
-    //     "bar"
-    //   )
-    //   tl.to(
-    //     item.children[1].scale,
-    //     {
-    //       duration: 1,
-    //       delay: 0.1 * index,
-    //       x: 1,
-    //       y: 1,
-    //       z: 1,
-    //       ease: "circ.out",
-    //     },
-    //     "bar"
-    //   )
-    // })
+    this.allProvinceLabel.map((item, index) => {
+      let element = item.element.querySelector(".provinces-label-wrap");
+      let number = item.element.querySelector(".number .value");
+      let numberVal = Number(number.innerText);
+      let numberAnimate = {
+        score: 0,
+      };
+      tl.to(
+        element,
+        {
+          duration: 1,
+          delay: 0.2 * index,
+          translateY: 0,
+          opacity: 1,
+          ease: "circ.out",
+        },
+        "bar"
+      );
+      tl.to(
+        numberAnimate,
+        {
+          duration: 1,
+          delay: 0.2 * index,
+          score: numberVal,
+          onUpdate: showScore,
+        },
+        "bar"
+      );
+      function showScore() {
+        number.innerText = numberAnimate.score.toFixed(0);
+      }
+    });
+    this.allGuangquan.map((item, index) => {
+      tl.to(
+        item.children[0].scale,
+        {
+          duration: 1,
+          delay: 0.1 * index,
+          x: 1,
+          y: 1,
+          z: 1,
+          ease: "circ.out",
+        },
+        "bar"
+      );
+      tl.to(
+        item.children[1].scale,
+        {
+          duration: 1,
+          delay: 0.1 * index,
+          x: 1,
+          y: 1,
+          z: 1,
+          ease: "circ.out",
+        },
+        "bar"
+      );
+    });
   }
 
   createMap() {
