@@ -5,12 +5,16 @@ import tailwindcss from "@tailwindcss/vite";
 import { OUTPUT_DIR } from "./build/constant";
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/react-three-map/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"), // 相对路径别名配置，使用 @ 代替 src
       "~@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    outDir: OUTPUT_DIR,
   },
   server: {
     port: 3100, // 默认端口
